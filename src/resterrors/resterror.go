@@ -1,7 +1,7 @@
 package resterrors
 
 type RestError struct {
-	Error      string
-	Message    string
-	HttpStatus int
+	Error      string `json:"error"`
+	Message    string `json:"message"`
+	HttpStatus int    `json:"httpstatus"`
 }

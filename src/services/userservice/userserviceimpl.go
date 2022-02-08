@@ -35,10 +35,18 @@ func (userservice *UserServiceImpl) GetAllUsers() (err *resterrors.RestError) {
 	return resterrors.NewNotImplementedError("Method not implemented!")
 }
 
-func (userservice *UserServiceImpl) UpdateUser() (err *resterrors.RestError) {
-	return resterrors.NewNotImplementedError("Method not implemented!")
+func (userservice *UserServiceImpl) UpdateUser(userid int, user *usermodels.User) (*usermodels.User, *resterrors.RestError) {
+	if err := user.UpdateUser(userid); err != nil {
+		return nil, errorparser.ParseError(err)
+	}
+	return user, nil
 }
 
-func (userservice *UserServiceImpl) DeleteUser() (err *resterrors.RestError) {
-	return resterrors.NewNotImplementedError("Method not implemented!")
+func (userservice *UserServiceImpl) DeleteUser(userid int) (*usermodels.User, *resterrors.RestError) {
+	user := &usermodels.User{}
+	user.ID = uint(userid)
+	if err := user.DeleteUser(); err != nil {
+		return nil, errorparser.ParseError(err)
+	}
+	return user, nil
 }

@@ -59,9 +59,40 @@ func (usercontroller *UserController) GetAllUsers(c *gin.Context) {
 }
 
 func (usercontroller *UserController) UpdateUser(c *gin.Context) {
+	userid := c.Param("user_id")
+	userId, err := strconv.ParseInt(userid, 10, 32)
+	if err != nil {
+		parseErr := resterrors.NewBadRequestError("Unable to parse userID from params!")
+		c.JSON(parseErr.HttpStatus, parseErr)
+		return
+	}
+	var user = usermodels.User{}
+	if parserr := c.ShouldBindJSON(&user); parserr != nil {
+		resterr := resterrors.NewBadRequestError("Unable to parse user from JSON!")
+		c.JSON(resterr.HttpStatus, resterr)
+		return
+	}
 
+	result, resterr := usercontroller.service.UpdateUser(int(userId), &user)
+	if resterr != nil {
+		c.JSON(resterr.HttpStatus, resterr)
+		return
+	}
+	c.JSON(http.StatusAccepted, result)
 }
 
 func (usercontroller *UserController) DeleteUser(c *gin.Context) {
-
+	userid := c.Param("user_id")
+	userId, converr := strconv.ParseInt(userid, 10, 32)
+	if converr != nil {
+		parseErr := resterrors.NewBadRequestError("Unable to parse user ID from params!")
+		c.JSON(parseErr.HttpStatus, parseErr)
+		return
+	}
+	user, err := usercontroller.service.DeleteUser(int(userId))
+	if err != nil {
+		c.JSON(err.HttpStatus, err)
+		return
+	}
+	c.JSON(http.StatusOK, user)
 }
