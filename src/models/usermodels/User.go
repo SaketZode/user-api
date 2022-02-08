@@ -56,6 +56,14 @@ func (user *User) GetUser(userid int) (err error) {
 	return nil
 }
 
+func (user *User) GetAllUsers() (userslist []User, err error) {
+	if err := postgresdb.DatabaseConnection.Find(&userslist).Error; err != nil {
+		fmt.Println("Error while fetching users list:", err)
+		return nil, err
+	}
+	return userslist, nil
+}
+
 func (user *User) UpdateUser(userid int) error {
 	existing := &User{}
 	txn := postgresdb.DatabaseConnection.Begin()

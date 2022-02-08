@@ -31,8 +31,13 @@ func (userservice *UserServiceImpl) GetUser(userid int) (user *usermodels.User, 
 	return user, nil
 }
 
-func (userservice *UserServiceImpl) GetAllUsers() (err *resterrors.RestError) {
-	return resterrors.NewNotImplementedError("Method not implemented!")
+func (userservice *UserServiceImpl) GetAllUsers() (users []usermodels.User, err *resterrors.RestError) {
+	user := usermodels.User{}
+	userslist, geterr := user.GetAllUsers()
+	if geterr != nil {
+		return nil, errorparser.ParseError(geterr)
+	}
+	return userslist, nil
 }
 
 func (userservice *UserServiceImpl) UpdateUser(userid int, user *usermodels.User) (*usermodels.User, *resterrors.RestError) {

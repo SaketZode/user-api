@@ -17,6 +17,7 @@ func mapURLS() {
 	usercontroller := usercontroller.New()
 	router.POST("/user", usercontroller.CreateUser)
 	router.GET("/user/:user_id", usercontroller.GetUser)
+	router.GET("/users", usercontroller.GetAllUsers)
 	router.PUT("/user/:user_id", usercontroller.UpdateUser)
 	router.DELETE("/user/:user_id", usercontroller.DeleteUser)
 }

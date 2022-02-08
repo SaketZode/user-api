@@ -55,7 +55,12 @@ func (usercontroller *UserController) GetUser(c *gin.Context) {
 }
 
 func (usercontroller *UserController) GetAllUsers(c *gin.Context) {
-
+	users, err := usercontroller.service.GetAllUsers()
+	if err != nil {
+		c.JSON(err.HttpStatus, err)
+		return
+	}
+	c.JSON(http.StatusOK, users)
 }
 
 func (usercontroller *UserController) UpdateUser(c *gin.Context) {
